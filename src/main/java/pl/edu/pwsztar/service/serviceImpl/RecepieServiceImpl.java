@@ -37,7 +37,6 @@ public class RecepieServiceImpl implements RecepieService {
     private final RecepieProductsService recepieProductsService;
     private final ProductService productService;
 
-
     @Autowired
     public RecepieServiceImpl(RecepieRepository recepieRepository,
                               CreateRecepieMapper createRecepieMapper,
@@ -78,16 +77,15 @@ public class RecepieServiceImpl implements RecepieService {
     @Override
     public List<SimpleRecepieDto> filterRecepies(List<ProductDto> productDtoList) {
 
-        List<SimpleRecepieDto> allRecepies = getSimpleRecepies();
+        List<SimpleRecepieDto> allRecepies = simpleRecepieListMapper.convert(recepieRepository.findAll());
         List<SimpleRecepieDto> filteredRecepies = new ArrayList<>();
+
 
         List<ProductDto> requiredProductsForRecepie = new ArrayList<>();
 
         allRecepies.forEach(recepie ->{
             List<RecepieProductsDto> allProductsRequiredForRecepie = recepieProductsService.getProductsRequiredForRecepie(recepie.getRecepieId());
-
-                allProductsRequiredForRecepie.forEach(productRequired ->
-                        requiredProductsForRecepie.add(productService.getRequiredProductDetails(productRequired.getProductId()))
+                allProductsRequiredForRecepie.forEach(productRequired -> requiredProductsForRecepie.add(productService.getRequiredProductDetails(productRequired.getProductId()))
                     );
 
                 if(requiredProductsForRecepie.stream()
