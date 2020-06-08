@@ -21,6 +21,7 @@ import java.util.List;
 public class RecepieApiController {
     private static final Logger LOGGER = LoggerFactory.getLogger(RecepieApiController.class);
     private final RecepieService recepieService;
+    private List<SimpleRecepieDto> simpleRecepieDtoList;
 
 
     @Autowired
@@ -62,11 +63,17 @@ public class RecepieApiController {
     }
 
     @CrossOrigin
-    @RequestMapping(value="/recepies/filter", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<List<SimpleRecepieDto>> filterRecepie(@RequestBody List<ProductDto> productDtoList){
+    @RequestMapping(value="/recepies/filter", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE, method = RequestMethod.POST)
+    public ResponseEntity<?> filterRecepie(@RequestBody List<ProductDto> productDtoList){
         LOGGER.info("Filtering recepies{}", productDtoList.toString());
-        List<SimpleRecepieDto> simpleRecepieDtoList = recepieService.filterRecepies(productDtoList);
+        simpleRecepieDtoList = recepieService.filterRecepies(productDtoList);
 
-        return new ResponseEntity<>( simpleRecepieDtoList, HttpStatus.OK);
+        return new ResponseEntity<>( HttpStatus.CREATED);
+    }
+
+    @CrossOrigin
+    @GetMapping(value="/recepies/filtered", produces =  MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<List<SimpleRecepieDto>> getFiltered(){
+        return new ResponseEntity<>(simpleRecepieDtoList, HttpStatus.OK);
     }
 }
