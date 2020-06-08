@@ -66,7 +66,6 @@ public class RecepieApiController {
     @RequestMapping(value="/recepies/filter", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE, method = RequestMethod.POST)
     public ResponseEntity<?> filterRecepie(@RequestBody List<ProductDto> productDtoList){
         LOGGER.info("Filtering recepies{}", productDtoList.toString());
-        simpleRecepieDtoList = null;
         simpleRecepieDtoList = recepieService.filterRecepies(productDtoList);
 
         return new ResponseEntity<>( HttpStatus.CREATED);
