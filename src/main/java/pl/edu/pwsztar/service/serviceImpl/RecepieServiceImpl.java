@@ -100,7 +100,7 @@ public class RecepieServiceImpl implements RecepieService {
                                     if(possibleAmount.isPresent()){
                                         amount = possibleAmount.get().getAmount();
                                     }
-                                    System.out.println(recepie.getName() +" ->" + userProduct.getName() + " = " + requiredProductForRecepie.getName());
+
                                     return userProduct.getName().equals(requiredProductForRecepie.getName())
                                             && userProduct.getAmount() >= requiredProductForRecepie.getAmount() * amount;
                                 })
